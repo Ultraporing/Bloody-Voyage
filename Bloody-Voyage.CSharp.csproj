@@ -66,57 +66,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ReverseNormals.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\FirstPersonCharacter\Scripts\RigidbodyFirstPersonController.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\RollerBall\Scripts\Ball.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\RollerBall\Scripts\BallUserControl.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\ThirdPersonCharacter\Scripts\AICharacterControl.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\ThirdPersonCharacter\Scripts\ThirdPersonCharacter.cs" />
-    <Compile Include="Assets\_Standard Assets\Characters\ThirdPersonCharacter\Scripts\ThirdPersonUserControl.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
-    <Compile Include="Assets\_Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\ActivateTrigger.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\AlphaButtonClickMask.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\AutoMoveAndRotate.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\CameraRefocus.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\CurveControlledBob.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\DragRigidbody.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\DynamicShadowSettings.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\EventSystemChecker.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\FOVKick.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\FPSCounter.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\FollowTarget.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\ForcedReset.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\LerpControlledBob.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\ObjectResetter.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\ParticleSystemDestroyer.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\PlatformSpecificContent.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\SimpleActivatorMenu.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\SimpleMouseRotator.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\SmoothFollow.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\TimedObjectActivator.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\TimedObjectDestructor.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\WaypointCircuit.cs" />
-    <Compile Include="Assets\_Standard Assets\Utility\WaypointProgressTracker.cs" />
+    <ProjectReference Include="Bloody-Voyage.CSharp.Plugins.csproj">
+      <Project>{93138D15-358B-0F73-3561-A405EE226D1A}</Project>
+      <Name>Bloody-Voyage.CSharp.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
-    <None Include="Assets\_Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
-    <None Include="Assets\_Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
-    <None Include="Assets\_Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <Compile Include="Assets\MouseOrbitImproved.cs" />
+    <Compile Include="Assets\ParticleOnOff.cs" />
+    <Compile Include="Assets\ReverseNormals.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
+    <None Include="Assets\Standard Assets\Vehicles\Aircraft\AircraftGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Vehicles\Car\CarGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\DiffuseReflectiveShader.shader" />
+    <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpec.shader" />
+    <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpecTransp.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
