@@ -2,15 +2,16 @@ using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
 
+[RequireComponent(typeof(ShipController))]
 public class ParticleOnOff : MonoBehaviour {
 
     public ParticleSystem ps = null;
-    public CarController cc = null;
+    private ShipController cc = null;
     public float speed = 0;
     public bool playing = false;
 	// Use this for initialization
 	void Start () {
-        cc = GetComponent<CarController>();
+        cc = GetComponent<ShipController>();
 	}
 	
 	// Update is called once per frame
