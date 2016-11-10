@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Controllers\ShipUserControl.cs" />
     <Compile Include="Assets\Scripts\Controllers\TrajectorySimulation.cs" />
     <Compile Include="Assets\Scripts\Effects\ParticleOnOff.cs" />
+    <Compile Include="Assets\SpeedDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
