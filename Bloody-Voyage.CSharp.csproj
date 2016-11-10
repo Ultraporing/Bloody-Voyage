@@ -74,7 +74,12 @@
   <ItemGroup>
     <Compile Include="Assets\ReverseNormals.cs" />
     <Compile Include="Assets\Scripts\Camera\MouseOrbitImproved.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Cannons\CannonBankController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Cannons\CannonBaseController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Cannons\CannonController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerFire.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Sails\SailController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Sails\SailMeshController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShipUserControl.cs" />
     <Compile Include="Assets\Scripts\Controllers\TrajectorySimulation.cs" />
