@@ -6,14 +6,15 @@ namespace Controllers.Sails
     [RequireComponent(typeof(MeshRenderer))]
     public class SailMeshController : MonoBehaviour
     {
-        public Vector3 PositionFullToHalfMultiplicator = new Vector3();
-        public Vector3 ScaleFullToHalfMultiplicator = new Vector3();
+        public Vector3[] PositionStages = new Vector3[2];
+        public Vector3[] ScaleStages = new Vector3[2];
         [Range(0,2)]
         public int CurrentStage = 0;
         private MeshRenderer MeshRenderer = null;
 
         // Use this for initialization
-        void Start () {
+        private void Awake()
+        {
             MeshRenderer = GetComponent<MeshRenderer>();
 
         }
@@ -24,15 +25,8 @@ namespace Controllers.Sails
             {
                 CurrentStage++;
 
-                transform.position = new Vector3(
-                    transform.position.x * PositionFullToHalfMultiplicator.x, 
-                    transform.position.y * PositionFullToHalfMultiplicator.y, 
-                    transform.position.z * PositionFullToHalfMultiplicator.z);
-
-                transform.localScale = new Vector3(
-                    transform.localScale.x / ScaleFullToHalfMultiplicator.x,
-                    transform.localScale.y / ScaleFullToHalfMultiplicator.y,
-                    transform.localScale.z / ScaleFullToHalfMultiplicator.z);
+                transform.localPosition = PositionStages[CurrentStage];
+                transform.localScale = ScaleStages[CurrentStage];
             }
             else if (CurrentStage == 1)
             {
@@ -47,19 +41,14 @@ namespace Controllers.Sails
             {
                 CurrentStage--;
 
-                transform.position = new Vector3(
-                    transform.position.x / PositionFullToHalfMultiplicator.x,
-                    transform.position.y / PositionFullToHalfMultiplicator.y,
-                    transform.position.z / PositionFullToHalfMultiplicator.z);
-
-                transform.localScale = new Vector3(
-                    transform.localScale.x * ScaleFullToHalfMultiplicator.x,
-                    transform.localScale.y * ScaleFullToHalfMultiplicator.y,
-                    transform.localScale.z * ScaleFullToHalfMultiplicator.z);
+                transform.localPosition = PositionStages[CurrentStage];
+                transform.localScale = ScaleStages[CurrentStage];
             }
             else if (CurrentStage == 2)
             {
                 CurrentStage--;
+                transform.localPosition = PositionStages[CurrentStage];
+                transform.localScale = ScaleStages[CurrentStage];
                 MeshRenderer.enabled = true;
             }
         }

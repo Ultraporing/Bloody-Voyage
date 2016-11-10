@@ -5,17 +5,35 @@ namespace Controllers.Sails
 {
     public class SailController : MonoBehaviour
     {
+        public SailMeshController[] SailMeshControllers;
 
-        // Use this for initialization
-        void Start()
+        public void LowerSails()
         {
-
+            foreach (SailMeshController smc in SailMeshControllers)
+            {
+                smc.NextStage();
+            }
         }
 
-        // Update is called once per frame
-        void Update()
+        public void HoistSails()
         {
+            foreach (SailMeshController smc in SailMeshControllers)
+            {
+                smc.PreviousStage();
+            }
+        }
 
+        public int GetCurrentSailStage()
+        {
+            if (SailMeshControllers.Length > 0)
+            {
+                return SailMeshControllers[0].CurrentStage;
+            }
+            else
+            {
+                Debug.LogError("There are no SailMeshControllers in the list!");
+                return -1;
+            }
         }
     }
 }
