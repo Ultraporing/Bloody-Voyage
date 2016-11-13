@@ -1,3 +1,5 @@
+using Controllers.Sails;
+using Controllers.Cannons;
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -8,7 +10,8 @@ namespace UnityStandardAssets.Vehicles.Car
     public class ShipUserControl : MonoBehaviour
     {
         private ShipController m_Car; // the car controller we want to use
-        public Controllers.Sails.SailController[] SailControllers;
+        public SailController[] SailControllers;
+        public CannonBankControllers[] CannonBankControllers;
         public int CurrentSailStage = 0;
         public float LastV = 0;
 
@@ -16,7 +19,7 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             // get the car controller
             m_Car = GetComponent<ShipController>();
-            foreach (Controllers.Sails.SailController sc in SailControllers)
+            foreach (SailController sc in SailControllers)
             {
                 sc.LowerSails();
                 sc.LowerSails();
@@ -38,7 +41,7 @@ namespace UnityStandardAssets.Vehicles.Car
             {
                 if (CurrentSailStage == 0)
                 {
-                    foreach (Controllers.Sails.SailController sc in SailControllers)
+                    foreach (SailController sc in SailControllers)
                     {
                         sc.LowerSails();
                     }
@@ -47,7 +50,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
                 else if (CurrentSailStage == 1)
                 {
-                    foreach (Controllers.Sails.SailController sc in SailControllers)
+                    foreach (SailController sc in SailControllers)
                     {
                         sc.LowerSails();
                     }
@@ -68,7 +71,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
                 else if (CurrentSailStage == 1)
                 {
-                    foreach (Controllers.Sails.SailController sc in SailControllers)
+                    foreach (SailController sc in SailControllers)
                     {
                         sc.HoistSails();
                     }
@@ -86,6 +89,19 @@ namespace UnityStandardAssets.Vehicles.Car
             m_Car.Move(h, LastV, LastV, 0f);
            // Debug.Log("h: " + h + ", v: " + v);
 
+        }
+
+        public CannonBankControllers FindCannonBankController(CannonBankSide side, CannonBankPosition pos)
+        {
+            foreach (CannonBankControllers cbc in CannonBankControllers)
+            {
+                if (pos == cbc.Position && side == cbc.Side)
+                {
+                    return cbc;
+                }
+            }
+
+            return null;
         }
     }
 }

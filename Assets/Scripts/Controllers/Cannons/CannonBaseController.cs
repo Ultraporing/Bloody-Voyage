@@ -5,6 +5,7 @@ namespace Controllers.Cannons
 {
     public class CannonBaseController : MonoBehaviour
     {
+        public CannonController CannonController = null;
 
         // Use this for initialization
         void Start()
