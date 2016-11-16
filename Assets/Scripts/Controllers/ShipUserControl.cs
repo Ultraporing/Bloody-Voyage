@@ -18,11 +18,12 @@ namespace UnityStandardAssets.Vehicles.Car
         private ShipController m_Car; // the car controller we want to use
         public SailController[] SailControllers;
         public CannonBankControllers[] CannonBankControllers;
-        public int CurrentSailStage = 0;
-        public float LastV = 0;
-        public CannonBankControllers CurrentActiveCannonBank = null;
-        public ShipMode currentShipMode = ShipMode.Sailing;
-        public GameObject shipCamera = null; 
+        public GameObject shipCamera = null;
+        private int CurrentSailStage = 0;
+        private float LastV = 0;
+        private CannonBankControllers CurrentActiveCannonBank = null;
+        private int ActiveCannonbankHash = 0;
+        private ShipMode currentShipMode = ShipMode.Sailing;
 
         private void Awake()
         {
@@ -147,11 +148,6 @@ namespace UnityStandardAssets.Vehicles.Car
                 ActivateCannonBank(FindCannonBankController(nextSide, CurrentActiveCannonBank.Position));
                 
             }
-
-            if (Input.GetButtonUp("SwitchMode"))
-            {
-                SwitchModes();
-            }
         }
 
         private void FixedUpdate()
@@ -200,16 +196,17 @@ namespace UnityStandardAssets.Vehicles.Car
         // Provide cannonbank to activate. To deactivate cannonbank just pass null.
         public void ActivateCannonBank(CannonBankControllers cbc)
         {
-            if (CurrentActiveCannonBank.CannonBank != null)
+            if (ActiveCannonbankHash != 0)
             {
                 CurrentActiveCannonBank.CannonBank.Deactivate();
-                CurrentActiveCannonBank = null;
+                ActiveCannonbankHash = 0;
             }
 
             if (cbc != null)
             {
                 CurrentActiveCannonBank = cbc;
                 CurrentActiveCannonBank.CannonBank.Activate();
+                ActiveCannonbankHash = cbc.GetHashCode();
             }
         }
     }

@@ -9,11 +9,12 @@ namespace Controllers.Cannons
         public float CannonMinZRotation = -90;
         public float CannonMaxZRotation = -45;
         public float CannonTargetZRotation = -90;
+        public GameObject SightLine = null;
 
         // Use this for initialization
         void Start()
         {
-
+            SightLine = transform.FindChild("SightLine").gameObject;
         }
 
         // Update is called once per frame
@@ -24,12 +25,12 @@ namespace Controllers.Cannons
 
         public void Deactivate()
         {
-            
+            SightLine.SetActive(false);
         }
 
         public void Activate()
         {
-            
+            SightLine.SetActive(true);
         }
 
         // only uses Z part
