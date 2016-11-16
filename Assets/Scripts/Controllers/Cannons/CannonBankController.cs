@@ -27,6 +27,9 @@ namespace Controllers.Cannons
     public class CannonBankController : MonoBehaviour
     {
         public CannonBaseController[] CannonBaseControllers;
+        public GameObject CameraRig;
+        public Vector3 TargetRot;
+        public Vector3 LastTargetRot;
 
         // Use this for initialization
         void Start()
@@ -37,7 +40,39 @@ namespace Controllers.Cannons
         // Update is called once per frame
         void Update()
         {
+            if (TargetRot != LastTargetRot)
+            {
+                SetTargetRotation(TargetRot);
+                LastTargetRot = TargetRot;
+            }
+        }
 
+        public void Deactivate()
+        {
+            foreach (CannonBaseController cbc in CannonBaseControllers)
+            {
+                cbc.Deactivate();
+            }
+
+            CameraRig.SetActive(false);
+        }
+
+        public void Activate()
+        {
+            foreach (CannonBaseController cbc in CannonBaseControllers)
+            {
+                cbc.Activate();
+            }
+
+            CameraRig.SetActive(true);
+        }
+
+        public void SetTargetRotation(Vector3 rot)
+        {
+            foreach (CannonBaseController cbc in CannonBaseControllers)
+            {
+                cbc.SetTargetRotation(rot);
+            }
         }
     }
 }
