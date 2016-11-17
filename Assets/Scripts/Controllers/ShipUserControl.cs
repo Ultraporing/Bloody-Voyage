@@ -19,6 +19,8 @@ namespace UnityStandardAssets.Vehicles.Car
         public SailController[] SailControllers;
         public CannonBankControllers[] CannonBankControllers;
         public GameObject shipCamera = null;
+        public float rotSpeed = 2;
+
         private int CurrentSailStage = 0;
         private float LastV = 0;
         private CannonBankControllers CurrentActiveCannonBank = null;
@@ -34,6 +36,9 @@ namespace UnityStandardAssets.Vehicles.Car
                 sc.LowerSails();
                 sc.LowerSails();
             }
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         void Update()
@@ -53,6 +58,24 @@ namespace UnityStandardAssets.Vehicles.Car
             {
                 SwitchModes();
             }
+        }
+
+        private void FixedUpdate()
+        {
+            float h = 0;
+
+            if (currentShipMode == ShipMode.Sailing)
+            {
+                h = CrossPlatformInputManager.GetAxis("Horizontal");
+            }
+            else if (currentShipMode == ShipMode.Firing)
+            {
+                HandleCannonRotation();
+            }
+            
+            m_Car.Move(h, LastV, LastV, 0f);
+           // Debug.Log("h: " + h + ", v: " + v);
+
         }
 
         private void HandleSailingInput()
@@ -117,7 +140,7 @@ namespace UnityStandardAssets.Vehicles.Car
             if (Input.GetButtonUp("CannonbankRight"))
             {
                 int nextCBPos = ((int)CurrentActiveCannonBank.Position) + (CurrentActiveCannonBank.Side == CannonBankSide.Left ? 1 : -1);
-                
+
                 if (nextCBPos <= maxEnumPos && nextCBPos >= minEnumPos)
                 {
                     ActivateCannonBank(FindCannonBankController(CurrentActiveCannonBank.Side, (CannonBankPosition)nextCBPos));
@@ -144,24 +167,34 @@ namespace UnityStandardAssets.Vehicles.Car
                 {
                     nextSide = CannonBankSide.Right;
                 }
-                
+
                 ActivateCannonBank(FindCannonBankController(nextSide, CurrentActiveCannonBank.Position));
-                
             }
         }
 
-        private void FixedUpdate()
+        private void HandleCannonRotation()
         {
-            float h = 0;
+            Vector3 targetRot = CurrentActiveCannonBank.CannonBank.GetTargetRotation();
 
-            if (currentShipMode == ShipMode.Sailing)
+            if (Input.GetAxis("Mouse X") < 0)
             {
-                h = CrossPlatformInputManager.GetAxis("Horizontal");
+                targetRot.x += -rotSpeed*Time.deltaTime;
             }
-            
-            m_Car.Move(h, LastV, LastV, 0f);
-           // Debug.Log("h: " + h + ", v: " + v);
+            else if (Input.GetAxis("Mouse X") > 0)
+            {
+                targetRot.x += rotSpeed * Time.deltaTime;
+            }
 
+            if (Input.GetAxis("Mouse Y") < 0)
+            {
+                targetRot.z += -rotSpeed * Time.deltaTime;
+            }
+            else if (Input.GetAxis("Mouse Y") > 0)
+            {
+                targetRot.z += rotSpeed * Time.deltaTime;
+            }
+
+            CurrentActiveCannonBank.CannonBank.SetTargetRotation(targetRot);
         }
 
         private void SwitchModes()

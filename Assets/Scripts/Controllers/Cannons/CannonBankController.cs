@@ -72,7 +72,13 @@ namespace Controllers.Cannons
             foreach (CannonBaseController cbc in CannonBaseControllers)
             {
                 cbc.SetTargetRotation(rot);
+                TargetRot = rot;
             }
+        }
+
+        public Vector3 GetTargetRotation()
+        {
+            return TargetRot;
         }
     }
 }
