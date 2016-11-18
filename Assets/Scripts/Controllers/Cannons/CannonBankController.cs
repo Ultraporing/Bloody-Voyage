@@ -30,11 +30,12 @@ namespace Controllers.Cannons
         public GameObject CameraRig;
         public Vector3 TargetRot;
         public Vector3 LastTargetRot;
+        private AudioSource CannonSFX = null;
 
         // Use this for initialization
         void Start()
         {
-
+            CannonSFX = transform.FindChild("CannonSFX").GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -79,9 +80,14 @@ namespace Controllers.Cannons
 
         public void Fire()
         {
-            foreach (CannonBaseController cbc in CannonBaseControllers)
+            if (!GetCannonReloadStatus())
             {
-                cbc.Fire();
+                foreach (CannonBaseController cbc in CannonBaseControllers)
+                {
+                    cbc.Fire();
+                }
+
+                CannonSFX.Play();
             }
         }
 

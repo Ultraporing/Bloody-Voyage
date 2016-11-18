@@ -11,33 +11,42 @@ namespace Controllers.Cannons
         public float CannonTargetZRotation = -90;
         public float CannonReloadTimeSec = 10;
         public bool CannonReloading = false;
-
+        public GameObject CannonballPrefab = null;
         private GameObject SightLine = null;
         private ParticleSystem ShootParticleEffect = null;
-        private AudioSource CannonSFX = null;
+        private bool isActive = false;
+        
 
         // Use this for initialization
         void Start()
         {
             SightLine = transform.FindChild("SightLine").gameObject;
             ShootParticleEffect = transform.FindChild("WhiteSmoke").GetComponent<ParticleSystem>();
-            CannonSFX = transform.FindChild("CannonSFX").GetComponent<AudioSource>();
-            CannonSFX.Stop();
+            
         }
 
         // Update is called once per frame
         void Update()
         {
-
+            if (CannonReloading && SightLine.activeSelf && isActive)
+            {
+                SightLine.SetActive(false);
+            }
+            else if (!CannonReloading && !SightLine.activeSelf && isActive)
+            {
+                SightLine.SetActive(true);
+            }
         }
 
         public void Deactivate()
         {
+            isActive = false;
             SightLine.SetActive(false);
         }
 
         public void Activate()
         {
+            isActive = true;
             SightLine.SetActive(true);
         }
 
@@ -58,9 +67,11 @@ namespace Controllers.Cannons
         {
             if (!CannonReloading)
             {
+                Vector3 spawnPos = SightLine.transform.position;
+                SightLine.SetActive(false);
                 ShootParticleEffect.Play();
-                CannonSFX.Play();
                 StartCoroutine(ReloadCannon());
+                Instantiate(CannonballPrefab, SightLine.transform.position, ShootParticleEffect.transform.rotation);  
             }
         }
 

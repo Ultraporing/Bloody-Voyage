@@ -77,12 +77,15 @@
     <Compile Include="Assets\Scripts\Controllers\Cannons\CannonBankController.cs" />
     <Compile Include="Assets\Scripts\Controllers\Cannons\CannonBaseController.cs" />
     <Compile Include="Assets\Scripts\Controllers\Cannons\CannonController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Cannons\CannonballController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerFire.cs" />
     <Compile Include="Assets\Scripts\Controllers\Sails\SailController.cs" />
     <Compile Include="Assets\Scripts\Controllers\Sails\SailMeshController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ShipUserControl.cs" />
     <Compile Include="Assets\Scripts\Controllers\TrajectorySimulation.cs" />
+    <Compile Include="Assets\Scripts\Effects\EffectAutoDestroy.cs" />
+    <Compile Include="Assets\Scripts\Effects\EffectSpawnOnSurface.cs" />
     <Compile Include="Assets\Scripts\Effects\ParticleOnOff.cs" />
     <Compile Include="Assets\SpeedDisplay.cs" />
   </ItemGroup>
