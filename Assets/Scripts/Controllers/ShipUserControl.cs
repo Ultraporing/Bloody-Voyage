@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Linq;
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Controllers.Vehicles.Ship
 {
     public enum ShipMode
     {
@@ -25,7 +25,7 @@ namespace UnityStandardAssets.Vehicles.Car
         private float LastV = 0;
         private CannonBankControllers CurrentActiveCannonBank = null;
         private int ActiveCannonbankHash = 0;
-        private ShipMode currentShipMode = ShipMode.Sailing;
+        public ShipMode currentShipMode = ShipMode.Sailing;
 
         private void Awake()
         {
@@ -170,6 +170,10 @@ namespace UnityStandardAssets.Vehicles.Car
 
                 ActivateCannonBank(FindCannonBankController(nextSide, CurrentActiveCannonBank.Position));
             }
+            else if (Input.GetButtonUp("Fire"))
+            {
+                CurrentActiveCannonBank.CannonBank.Fire();
+            }
         }
 
         private void HandleCannonRotation()
@@ -241,6 +245,14 @@ namespace UnityStandardAssets.Vehicles.Car
                 CurrentActiveCannonBank.CannonBank.Activate();
                 ActiveCannonbankHash = cbc.GetHashCode();
             }
+        }
+
+        public bool GetCannonReloadStatus()
+        {
+
+                return CurrentActiveCannonBank.CannonBank.GetCannonReloadStatus();
+            
+
         }
     }
 }

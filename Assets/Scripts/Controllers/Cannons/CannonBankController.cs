@@ -40,11 +40,7 @@ namespace Controllers.Cannons
         // Update is called once per frame
         void Update()
         {
-            if (TargetRot != LastTargetRot)
-            {
-                SetTargetRotation(TargetRot);
-                LastTargetRot = TargetRot;
-            }
+
         }
 
         public void Deactivate()
@@ -79,6 +75,19 @@ namespace Controllers.Cannons
         public Vector3 GetTargetRotation()
         {
             return TargetRot;
+        }
+
+        public void Fire()
+        {
+            foreach (CannonBaseController cbc in CannonBaseControllers)
+            {
+                cbc.Fire();
+            }
+        }
+
+        public bool GetCannonReloadStatus()
+        {
+            return CannonBaseControllers[0].CannonController.CannonReloading;
         }
     }
 }

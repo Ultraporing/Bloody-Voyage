@@ -46,5 +46,10 @@ namespace Controllers.Cannons
             Quaternion target = Quaternion.Euler(CannonBaseTargetXRotation, transform.localRotation.y, -90);
             transform.localRotation = Quaternion.Slerp(transform.rotation, target, 1);
         }
+
+        public void Fire()
+        {
+            CannonController.Fire();
+        }
     }
 }

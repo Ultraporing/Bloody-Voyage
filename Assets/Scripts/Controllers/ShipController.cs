@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityStandardAssets.Vehicles.Car;
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Controllers.Vehicles.Ship
 {
     internal enum CarDriveType
     {

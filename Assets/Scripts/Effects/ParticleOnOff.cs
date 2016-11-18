@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
+using Controllers.Vehicles.Ship;
 
 [RequireComponent(typeof(ShipController))]
 public class ParticleOnOff : MonoBehaviour {
