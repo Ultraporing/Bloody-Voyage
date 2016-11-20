@@ -251,8 +251,11 @@ namespace Controllers.Vehicles.Ship
         {
 
                 return CurrentActiveCannonBank.CannonBank.GetCannonReloadStatus();
-            
+        }
 
+        public CannonBankControllers GetActiveCannonBank()
+        {
+            return ActiveCannonbankHash != 0 ? CurrentActiveCannonBank : null;
         }
     }
 }
