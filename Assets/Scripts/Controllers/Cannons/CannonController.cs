@@ -10,7 +10,7 @@ namespace Controllers.Cannons
         public float CannonMaxZRotation = -45;
         public float CannonTargetZRotation = -90;
         public float CannonReloadTimeSec = 10;
-        public bool CannonReloading = false;
+        public float CannonReloadingTimeLeft = 0;
         public GameObject CannonballPrefab = null;
         private GameObject SightLine = null;
         private ParticleSystem ShootParticleEffect = null;
@@ -28,13 +28,22 @@ namespace Controllers.Cannons
         // Update is called once per frame
         void Update()
         {
-            if (CannonReloading && SightLine.activeSelf && isActive)
+            if (CannonReloadingTimeLeft > 0 && SightLine.activeSelf && isActive)
             {
                 SightLine.SetActive(false);
             }
-            else if (!CannonReloading && !SightLine.activeSelf && isActive)
+            else if (CannonReloadingTimeLeft <= 0 && !SightLine.activeSelf && isActive)
             {
                 SightLine.SetActive(true);
+            }
+
+            if (CannonReloadingTimeLeft > 0)
+            {
+                CannonReloadingTimeLeft -= Time.deltaTime;
+                if (CannonReloadingTimeLeft < 0)
+                {
+                    CannonReloadingTimeLeft = 0;
+                }
             }
         }
 
@@ -65,21 +74,19 @@ namespace Controllers.Cannons
 
         public void Fire()
         {
-            if (!CannonReloading)
+            if (CannonReloadingTimeLeft <= 0)
             {
                 Vector3 spawnPos = SightLine.transform.position;
                 SightLine.SetActive(false);
                 ShootParticleEffect.Play();
-                StartCoroutine(ReloadCannon());
+                ReloadCannon();
                 Instantiate(CannonballPrefab, SightLine.transform.position, ShootParticleEffect.transform.rotation);  
             }
         }
 
-        private IEnumerator ReloadCannon()
+        private void ReloadCannon()
         {
-            CannonReloading = true;
-            yield return new WaitForSeconds(CannonReloadTimeSec); // waits 3 seconds
-            CannonReloading = false; // will make the update method pick up 
+            CannonReloadingTimeLeft = CannonReloadTimeSec;
         }
     }
 }

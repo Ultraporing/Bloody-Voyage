@@ -80,7 +80,7 @@ namespace Controllers.Cannons
 
         public void Fire()
         {
-            if (!GetCannonReloadStatus())
+            if (GetCannonReloadStatus() <= 0)
             {
                 foreach (CannonBaseController cbc in CannonBaseControllers)
                 {
@@ -91,9 +91,14 @@ namespace Controllers.Cannons
             }
         }
 
-        public bool GetCannonReloadStatus()
+        public float GetCannonReloadStatus()
         {
-            return CannonBaseControllers[0].CannonController.CannonReloading;
+            return CannonBaseControllers[0].CannonController.CannonReloadingTimeLeft;
+        }
+
+        public float GetCannonReloadTimeNeeded()
+        {
+            return CannonBaseControllers[0].CannonController.CannonReloadTimeSec;
         }
     }
 }

@@ -247,10 +247,14 @@ namespace Controllers.Vehicles.Ship
             }
         }
 
-        public bool GetCannonReloadStatus()
+        public float GetCannonReloadStatus()
         {
+            return CurrentActiveCannonBank.CannonBank.GetCannonReloadStatus();
+        }
 
-                return CurrentActiveCannonBank.CannonBank.GetCannonReloadStatus();
+        public float GetCannonReloadTimeNeeded()
+        {
+            return CurrentActiveCannonBank.CannonBank.GetCannonReloadTimeNeeded();
         }
 
         public CannonBankControllers GetActiveCannonBank()

@@ -9,8 +9,8 @@ public class EffectAutoDestroy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        AudioSources = FindObjectsOfType<AudioSource>();
-        ParticleSystems = FindObjectsOfType<ParticleSystem>();
+        AudioSources = gameObject.GetComponents<AudioSource>();
+        ParticleSystems = gameObject.GetComponents<ParticleSystem>();
 	}
 	
 	// Update is called once per frame

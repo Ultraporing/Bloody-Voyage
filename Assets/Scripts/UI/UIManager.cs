@@ -16,15 +16,16 @@ namespace UI
         float lastSpeed = 0;
 
         private GameObject ImageSpeed, ImageReload, CannonUI;
-        private Text TextSpeed, TextReload;
+        private Text TextSpeed, ReloadText;
         private SwitchCannonImage[] SwitchCannonImages;
-
+        private Image ImageReloadGreen;
 
 
         void Start()
         {
             ImageReload = transform.Find("ImageReload").gameObject;
-            TextReload = ImageReload.transform.Find("TextReload").GetComponent<Text>();
+            ImageReloadGreen = ImageReload.transform.Find("ImageReloadGreen").GetComponent<Image>();
+            ReloadText = ImageReload.transform.Find("ReloadTextBG").Find("ReloadText").GetComponent<Text>();
             ImageSpeed = transform.Find("ImageSpeed").gameObject;
             TextSpeed = ImageSpeed.transform.Find("TextSpeed").GetComponent<Text>();
             CannonUI = transform.Find("CannonUI").gameObject;
@@ -60,7 +61,18 @@ namespace UI
                     ImageReload.SetActive(true);
                 }
 
-                TextReload.text = "Cannons: " + (shipUserContr.GetCannonReloadStatus() == true ? "Reloading" : "Ready");
+                ImageReloadGreen.fillAmount = 1 / shipUserContr.GetCannonReloadTimeNeeded() * shipUserContr.GetCannonReloadStatus();
+
+                ReloadText.text = shipUserContr.GetCannonReloadStatus() > 0 ? "Reloading" : "Ready";
+
+                if (shipUserContr.GetActiveCannonBank().Side == CannonBankSide.Left)
+                {
+                    CannonUI.transform.localRotation = Quaternion.Euler(0, 0, 180);
+                }
+                else
+                {
+                    CannonUI.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                }
 
                 foreach (SwitchCannonImage sci in SwitchCannonImages)
                 {

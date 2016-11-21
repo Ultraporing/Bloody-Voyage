@@ -12,16 +12,9 @@ namespace UI
         private Image UiImage = null;
         private bool FirstSpriteActive = true;
 
-        // Use this for initialization
-        void Start()
+        void Awake()
         {
             UiImage = GetComponent<Image>();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         public void SwitchImage()
