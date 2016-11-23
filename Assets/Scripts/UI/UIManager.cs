@@ -15,7 +15,7 @@ namespace UI
         // Use this for initialization
         float lastSpeed = 0;
 
-        private GameObject ImageSpeed, ImageReload, CannonUI;
+        private GameObject ImageSpeed, ImageReload, CannonUI, UICompass;
         private Text TextSpeed, ReloadText;
         private SwitchCannonImage[] SwitchCannonImages;
         private Image ImageReloadGreen;
@@ -30,11 +30,13 @@ namespace UI
             TextSpeed = ImageSpeed.transform.Find("TextSpeed").GetComponent<Text>();
             CannonUI = transform.Find("CannonUI").gameObject;
             SwitchCannonImages = CannonUI.GetComponentsInChildren<SwitchCannonImage>();
+            UICompass = transform.Find("UICompass").gameObject;
         }
 
         // Update is called once per frame
         void Update()
         {
+            UICompass.transform.localRotation = CreateCompassRotation();
 
             if (shipUserContr.currentShipMode == ShipMode.Sailing)
             {
@@ -87,9 +89,24 @@ namespace UI
                 }
 
             }
-
-
         }
-    }
 
+        Quaternion CreateCompassRotation()
+        {
+            float yRot = shipUserContr.transform.localRotation.y;
+            float wRot = shipUserContr.transform.localRotation.w;
+
+            if (shipUserContr.currentShipMode == ShipMode.Sailing)
+            {
+                return new Quaternion(0, 0, yRot, wRot);
+            }
+            else 
+            {
+                Vector3 camEu = shipUserContr.GetActiveCannonBank().CannonBank.transform.Find("CannonBankCameraRig").eulerAngles;
+                return Quaternion.Euler(0, 0, camEu.y);
+
+            }
+        }
+
+    }
 }
