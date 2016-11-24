@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.2f2</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -66,6 +64,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="FastSockets x64">
+      <HintPath>Assets\_LIBS\FastSockets x64.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Bloody-Voyage.CSharp.Plugins.csproj">
@@ -89,9 +90,12 @@
     <Compile Include="Assets\Scripts\Effects\EffectAutoDestroy.cs" />
     <Compile Include="Assets\Scripts\Effects\EffectSpawnOnSurface.cs" />
     <Compile Include="Assets\Scripts\Effects\ParticleOnOff.cs" />
-    <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Network\BV_Client.cs" />
+    <Compile Include="Assets\Scripts\Network\BV_Packets.cs" />
+    <Compile Include="Assets\Scripts\Network\BV_Server.cs" />
     <Compile Include="Assets\Scripts\UI\SwitchCannonImage.cs" />
     <Compile Include="Assets\Scripts\UI\SwitchImageOnTrigger.cs" />
+    <Compile Include="Assets\Scripts\UI\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
