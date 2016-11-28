@@ -4,8 +4,10 @@ using System;
 
 namespace Controllers.Cannons
 {
+
     public class CannonController : MonoBehaviour
     {
+        
         public float CannonMinZRotation = -90;
         public float CannonMaxZRotation = -45;
         public float CannonTargetZRotation = -90;
@@ -76,7 +78,6 @@ namespace Controllers.Cannons
         {
             if (CannonReloadingTimeLeft <= 0)
             {
-                Vector3 spawnPos = SightLine.transform.position;
                 SightLine.SetActive(false);
                 ShootParticleEffect.Play();
                 ReloadCannon();

@@ -91,8 +91,8 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="FastSockets x64">
-      <HintPath>Assets\_LIBS\FastSockets x64.dll</HintPath>
+    <Reference Include="FastSockets_x86">
+      <HintPath>Assets\_LIBS\FastSockets_x86.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

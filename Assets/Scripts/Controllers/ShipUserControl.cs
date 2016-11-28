@@ -48,6 +48,28 @@ namespace Controllers.Vehicles.Ship
             if (currentShipMode == ShipMode.Sailing)
             {
                 HandleSailingInput();
+
+                if (CrossPlatformInputManager.GetButtonUp("FireLeftCannonbanks"))
+                {
+                    foreach (CannonBankControllers cbc in CannonBankControllers)
+                    {
+                        if (cbc.Side == CannonBankSide.Left)
+                        {
+                            cbc.CannonBank.Fire();
+                        }
+                    }
+                }
+
+                if (CrossPlatformInputManager.GetButtonUp("FireRightCannonbanks"))
+                {
+                    foreach (CannonBankControllers cbc in CannonBankControllers)
+                    {
+                        if (cbc.Side == CannonBankSide.Right)
+                        {
+                            cbc.CannonBank.Fire();
+                        }
+                    }
+                }
             }
             else if (currentShipMode == ShipMode.Firing)
             {
@@ -178,6 +200,9 @@ namespace Controllers.Vehicles.Ship
 
         private void HandleCannonRotation()
         {
+            if (CurrentActiveCannonBank.CannonBank.CannonRotationType == CannonRotationType.Fixed)
+                return;
+
             Vector3 targetRot = CurrentActiveCannonBank.CannonBank.GetTargetRotation();
 
             if (Input.GetAxis("Mouse X") < 0)

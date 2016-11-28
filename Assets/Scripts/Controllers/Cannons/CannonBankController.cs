@@ -24,9 +24,16 @@ namespace Controllers.Cannons
         public CannonBankController CannonBank;
     }
 
+    [Serializable]
+    public enum CannonRotationType
+    {
+        Fixed, Manual
+    }
+
     public class CannonBankController : MonoBehaviour
     {
-        public CannonBaseController[] CannonBaseControllers;
+        public CannonRotationType CannonRotationType = CannonRotationType.Fixed;
+        public CannonController[] CannonControllers;
         public GameObject CameraRig;
         public Vector3 TargetRot;
         public Vector3 LastTargetRot;
@@ -36,6 +43,7 @@ namespace Controllers.Cannons
         void Start()
         {
             CannonSFX = transform.FindChild("CannonSFX").GetComponent<AudioSource>();
+            CannonControllers = GetComponentsInChildren<CannonController>();
         }
 
         // Update is called once per frame
@@ -46,7 +54,7 @@ namespace Controllers.Cannons
 
         public void Deactivate()
         {
-            foreach (CannonBaseController cbc in CannonBaseControllers)
+            foreach (CannonController cbc in CannonControllers)
             {
                 cbc.Deactivate();
             }
@@ -56,7 +64,7 @@ namespace Controllers.Cannons
 
         public void Activate()
         {
-            foreach (CannonBaseController cbc in CannonBaseControllers)
+            foreach (CannonController cbc in CannonControllers)
             {
                 cbc.Activate();
             }
@@ -66,7 +74,7 @@ namespace Controllers.Cannons
 
         public void SetTargetRotation(Vector3 rot)
         {
-            foreach (CannonBaseController cbc in CannonBaseControllers)
+            foreach (CannonController cbc in CannonControllers)
             {
                 cbc.SetTargetRotation(rot);
                 TargetRot = rot;
@@ -82,7 +90,7 @@ namespace Controllers.Cannons
         {
             if (GetCannonReloadStatus() <= 0)
             {
-                foreach (CannonBaseController cbc in CannonBaseControllers)
+                foreach (CannonController cbc in CannonControllers)
                 {
                     cbc.Fire();
                 }
@@ -93,12 +101,12 @@ namespace Controllers.Cannons
 
         public float GetCannonReloadStatus()
         {
-            return CannonBaseControllers[0].CannonController.CannonReloadingTimeLeft;
+            return CannonControllers[0].CannonReloadingTimeLeft;
         }
 
         public float GetCannonReloadTimeNeeded()
         {
-            return CannonBaseControllers[0].CannonController.CannonReloadTimeSec;
+            return CannonControllers[0].CannonReloadTimeSec;
         }
     }
 }
