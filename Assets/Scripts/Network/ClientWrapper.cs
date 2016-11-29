@@ -40,7 +40,7 @@ namespace Network
 
                     PacketDesc_TestPacket tstPkt = new PacketDesc_TestPacket();
                     tstPkt.PacketTarget = EConnectionType.SECTOR_SERVER;
-                    tstPkt.someTestInt = 42;
+                    tstPkt.someTestVector = new Vector3(123, 55, 1);
 
                     Client.SendPacketToParent(tstPkt);
 
@@ -51,7 +51,7 @@ namespace Network
 
         private void Client_OnTestPacketReceived(KeyValuePair<ClientConnection, object> pkt)
         {
-            Debug.Log("Client has received the Test Packet. Sender: " + pkt.Key.ThisID + ". Data: " + ((PacketDesc_TestPacket)pkt.Value).someTestInt);
+            Debug.Log("Client has received the Test Packet. Sender: " + pkt.Key.ThisID + ". Data: " + ((PacketDesc_TestPacket)pkt.Value).someTestVector);
         }
 
         private void Client_OnClientConnectedReceived(KeyValuePair<ClientConnection, object> pkt)

@@ -1,5 +1,7 @@
+using Assets.Scripts.Network.Types;
 using FastSockets.Networking;
 using System;
+using UnityEngine;
 
 namespace Network
 {
@@ -12,6 +14,6 @@ namespace Network
     [Serializable]
     public class PacketDesc_TestPacket : BasePacket<BV_Packets>
     {
-        public int someTestInt;
+        public BV_Vector3 someTestVector;
     }
 }

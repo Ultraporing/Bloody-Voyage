@@ -40,7 +40,12 @@ namespace Network
 
         private void Server_OnTestPacketReceived(KeyValuePair<ClientConnection, object> pkt)
         {
-            Debug.Log("Server has received the Test Packet. Sender: " + pkt.Key.ThisID + ". Data: " + ((PacketDesc_TestPacket)pkt.Value).someTestInt);
+            Debug.Log("Server has received the Test Packet. Sender: " + pkt.Key.ThisID + ". Data: " + ((PacketDesc_TestPacket)pkt.Value).someTestVector);
+
+            PacketDesc_TestPacket pk = new PacketDesc_TestPacket();
+            pk.PacketTarget = EConnectionType.CLIENT;
+            pk.someTestVector = new Assets.Scripts.Network.Types.BV_Vector3(622.63f, 12315.767f, 138.5f);
+            Server.SendPacketToClient(pk, pkt.Key.ThisID);
         }
 
         private void Server_OnClientAccepted(int clientID)

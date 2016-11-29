@@ -8,7 +8,7 @@ namespace Network
     {
         public event OnPacketReceivedCallback OnTestPacketReceived;
 
-        public BV_Server() : base("derp.txt", EConnectionType.SECTOR_SERVER, 1000, 5000)
+        public BV_Server() : base("", EConnectionType.SECTOR_SERVER, 1000, 5000)
         {
             string cfgString = "PORT=1234;NAME=Herpderp;";
             LoadConfigFromString(cfgString);
