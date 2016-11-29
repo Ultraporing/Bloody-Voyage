@@ -1,13 +1,17 @@
 using FastSockets.Networking;
 using System;
 
-public enum BV_Packets
+namespace Network
 {
-    TestPacket = FastSockets.Networking.EBasePackets.NUM_PACKETS
-}
+    public enum BV_Packets
+    {
+        TestPacket = EBasePackets.NUM_PACKETS,
+        NUM_PACKETS
+    }
 
-[Serializable]
-public class PacketDesc_TestPacket : BasePacket<BV_Packets>
-{
-    public int someTestInt;
+    [Serializable]
+    public class PacketDesc_TestPacket : BasePacket<BV_Packets>
+    {
+        public int someTestInt;
+    }
 }

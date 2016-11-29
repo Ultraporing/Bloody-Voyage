@@ -93,6 +93,9 @@
     <Compile Include="Assets\Scripts\Network\BV_Client.cs" />
     <Compile Include="Assets\Scripts\Network\BV_Packets.cs" />
     <Compile Include="Assets\Scripts\Network\BV_Server.cs" />
+    <Compile Include="Assets\Scripts\Network\ClientWrapper.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkManager.cs" />
+    <Compile Include="Assets\Scripts\Network\ServerWrapper.cs" />
     <Compile Include="Assets\Scripts\UI\SwitchCannonImage.cs" />
     <Compile Include="Assets\Scripts\UI\SwitchImageOnTrigger.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />

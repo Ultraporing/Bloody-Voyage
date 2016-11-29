@@ -38,7 +38,7 @@ public class TrajectorySimulation : MonoBehaviour
         segments[0] = playerFire.transform.position;
 
         // The initial velocity
-        Vector3 segVelocity = playerFire.transform.up * playerFire.fireStrength * Time.deltaTime;
+        Vector3 segVelocity = playerFire.transform.up * (playerFire.fireStrength - playerFire.tweak) * Time.deltaTime;
 
         // reset our hit object
         _hitObject = null;

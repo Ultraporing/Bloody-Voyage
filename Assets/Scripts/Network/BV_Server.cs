@@ -2,18 +2,40 @@ using FastSockets.Networking;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BV_Server : BaseServer<BV_Packets, BV_Server>
+namespace Network
 {
-    public BV_Server() : base("", EConnectionType.SECTOR_SERVER, 1, 5)
+    public class BV_Server : BaseServer<BV_Packets, BV_Server>
     {
-        string cfgString = "PORT=1234;NAME=Herpderp;";
-        LoadConfigFromString(cfgString);
-        SetPort();
-    }
+        public event OnPacketReceivedCallback OnTestPacketReceived;
 
-    protected bool ReceivedPacket_TestPacket(KeyValuePair<ClientConnection, object> testPkt)
-    {
-        Debug.Log("Test Packet received!");
-        return true;
+        public BV_Server() : base("derp.txt", EConnectionType.SECTOR_SERVER, 1000, 5000)
+        {
+            string cfgString = "PORT=1234;NAME=Herpderp;";
+            LoadConfigFromString(cfgString);
+            SetPort();
+        }
+
+        public override void Shutdown()
+        {
+            base.Shutdown();
+        }
+
+        public override void Update()
+        {
+            if (IsRunning)
+            {
+                base.Update();
+            }
+        }
+
+        protected bool ReceivedPacket_TestPacket(KeyValuePair<ClientConnection, object> testPkt)
+        {
+            if (OnTestPacketReceived != null)
+            {
+                OnTestPacketReceived(testPkt);
+            }
+
+            return true;
+        }
     }
 }

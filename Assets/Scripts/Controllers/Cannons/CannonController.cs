@@ -17,12 +17,13 @@ namespace Controllers.Cannons
         private GameObject SightLine = null;
         private ParticleSystem ShootParticleEffect = null;
         private bool isActive = false;
-        
+        private PlayerFire PlayerFire = null;
 
         // Use this for initialization
         void Start()
         {
             SightLine = transform.FindChild("SightLine").gameObject;
+            PlayerFire = SightLine.GetComponent<PlayerFire>();
             ShootParticleEffect = transform.FindChild("WhiteSmoke").GetComponent<ParticleSystem>();
             
         }
@@ -81,7 +82,8 @@ namespace Controllers.Cannons
                 SightLine.SetActive(false);
                 ShootParticleEffect.Play();
                 ReloadCannon();
-                Instantiate(CannonballPrefab, SightLine.transform.position, ShootParticleEffect.transform.rotation);  
+                GameObject go = (GameObject)Instantiate(CannonballPrefab, SightLine.transform.position, ShootParticleEffect.transform.rotation);
+                go.GetComponent<CannonballController>().SendForce(PlayerFire.fireStrength); 
             }
         }
 

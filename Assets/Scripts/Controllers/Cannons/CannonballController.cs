@@ -11,8 +11,16 @@ public class CannonballController : MonoBehaviour
     {
         EffectSpawnOnSurface = GetComponent<EffectSpawnOnSurface>();
         CannonballRigidbody = GetComponent<Rigidbody>();
-        CannonballRigidbody.AddForce(transform.forward * 2000);
 	}
+
+    public void SendForce(float power)
+    {
+        EffectSpawnOnSurface = GetComponent<EffectSpawnOnSurface>();
+        CannonballRigidbody = GetComponent<Rigidbody>();
+
+        CannonballRigidbody.isKinematic = false;
+        CannonballRigidbody.AddForce(transform.forward * power);
+    }
 	
 	// Update is called once per frame
 	void Update () {
