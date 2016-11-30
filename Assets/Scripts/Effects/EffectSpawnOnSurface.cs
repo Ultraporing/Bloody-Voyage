@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class EffectSpawnContainer
 {
-    public string EffectHitTag = string.Empty;
+    public PhysicMaterial EffectHitMaterial = null;
     public GameObject EffectPrefab = null;
 }
 
@@ -16,7 +16,7 @@ public class EffectSpawnOnSurface : MonoBehaviour
     {
         foreach (EffectSpawnContainer esc in ImpactEffectPrefabs)
         {
-            if (collision.gameObject.tag == esc.EffectHitTag)
+            if (collision.collider.material.name.Replace(" (Instance)", string.Empty) == esc.EffectHitMaterial.name)
             {
                 Instantiate(esc.EffectPrefab, collision.contacts[0].point, Quaternion.Euler(collision.contacts[0].normal));
                 return;
