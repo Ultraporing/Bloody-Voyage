@@ -8,6 +8,9 @@ namespace Controllers.Sails
     {
         public Vector3[] PositionStages = new Vector3[2];
         public Vector3[] ScaleStages = new Vector3[2];
+        /// <summary>
+        /// The current sail stage. 0 = full sail, 1 = half sail, 2 = no sail
+        /// </summary>
         [Range(0,2)]
         public int CurrentStage = 0;
         private MeshRenderer MeshRenderer = null;
@@ -17,8 +20,11 @@ namespace Controllers.Sails
         {
             MeshRenderer = GetComponent<MeshRenderer>();
 
+            // Set sails to stage 2
+            NextStage();
+            NextStage();
         }
-	
+
         public void NextStage()
         {
             if (CurrentStage == 0)

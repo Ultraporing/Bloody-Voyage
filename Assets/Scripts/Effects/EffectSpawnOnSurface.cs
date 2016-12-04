@@ -18,7 +18,7 @@ public class EffectSpawnOnSurface : MonoBehaviour
         {
             if (collision.collider.material.name.Replace(" (Instance)", string.Empty) == esc.EffectHitMaterial.name)
             {
-                Instantiate(esc.EffectPrefab, collision.contacts[0].point, Quaternion.Euler(collision.contacts[0].normal));
+                Instantiate(esc.EffectPrefab, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
                 return;
             }
         }

@@ -1,30 +1,51 @@
 using UnityEngine;
 using Controllers.Vehicles.Ship;
+using Network.Controllers.Vehicles.Ship;
 
-[RequireComponent(typeof(ShipController))]
 public class ParticleOnOff : MonoBehaviour {
 
     public ParticleSystem ps = null;
-    private ShipController cc = null;
+    public LocalShipController cc = null;
+    public RemoteShipController rc = null;
     public float speed = 0;
     public bool playing = false;
 	// Use this for initialization
-	void Start () {
-        cc = GetComponent<ShipController>();
+	void Start ()
+    {
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        speed = cc.CurrentSpeed;
-        playing = ps.isPlaying;
 
-	    if (cc.CurrentSpeed > 1 && !ps.isPlaying)
+        if (cc != null)
         {
-            ps.Play();
+            speed = cc.CurrentSpeed;
+            playing = ps.isPlaying;
+
+            if (cc.CurrentSpeed > 1 && !ps.isPlaying)
+            {
+                ps.Play();
+            }
+            else if (cc.CurrentSpeed < 1 && ps.isPlaying)
+            {
+                ps.Stop();
+            }
         }
-        else if (cc.CurrentSpeed < 1 && ps.isPlaying)
+        else if (rc != null)
         {
-            ps.Stop();
+            speed = rc.CurrentSpeed;
+            playing = ps.isPlaying;
+
+            if (rc.CurrentSpeed > 1 && !ps.isPlaying)
+            {
+                ps.Play();
+            }
+            else if (rc.CurrentSpeed < 1 && ps.isPlaying)
+            {
+                ps.Stop();
+            }
         }
+        
 	}
 }

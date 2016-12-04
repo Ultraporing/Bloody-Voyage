@@ -1,3 +1,4 @@
+using Controllers.Vehicles.Ship;
 using FastSockets;
 using FastSockets.Networking;
 using System;
@@ -6,14 +7,13 @@ using UnityEngine;
 
 namespace Network
 {
+    [Serializable]
     public class BV_Client : BaseClient<BV_Packets, BV_Client>
     {
-        public bool IsLocalClient = false;
-        public event OnPacketReceivedCallback OnTestPacketReceived;
+        protected OnPacketReceivedCallback OnPktReceivedSendClientList, OnPktReceivedGameSyncTransform;
 
         public BV_Client() : base("", 5000)
         {
-           
         }
                 
         public override void Shutdown()
@@ -27,15 +27,25 @@ namespace Network
 
             base.Update();
         }
-
-        protected bool ReceivedPacket_TestPacket(KeyValuePair<ClientConnection, object> testPkt)
+        
+        protected bool ReceivedPacket_SendClientList(KeyValuePair<ClientConnection, object> pkt)
         {
-            if (OnTestPacketReceived != null)
+            if (OnPktReceivedSendClientList != null)
             {
-                OnTestPacketReceived(testPkt);
+                OnPktReceivedSendClientList(pkt);
             }
 
             return true;
-        } 
+        }
+
+        protected bool ReceivedPacket_GameSyncTransform(KeyValuePair<ClientConnection, object> pkt)
+        {
+            if (OnPktReceivedGameSyncTransform != null)
+            {
+                OnPktReceivedGameSyncTransform(pkt);
+            }
+
+            return true;
+        }
     }
 }

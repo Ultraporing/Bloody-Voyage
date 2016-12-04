@@ -86,9 +86,10 @@ public class TrajectorySimulation : MonoBehaviour
         Color endColor = startColor;
         startColor.a = 1;
         endColor.a = 0;
-        sightLine.SetColors(startColor, endColor);
+        sightLine.endColor = endColor;
+        sightLine.startColor = startColor;
 
-        sightLine.SetVertexCount(segmentCount);
+        sightLine.numPositions = segmentCount;
         for (int i = 0; i < segmentCount; i++)
             sightLine.SetPosition(i, segments[i]);
     }

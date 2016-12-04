@@ -23,6 +23,32 @@ namespace Controllers.Sails
             }
         }
 
+        /// <summary>
+        /// Network. set target SailStage. 0 = full sail, 1 = half sail, 2 = no sail
+        /// </summary>
+        /// <param name="targetStage">The target SailStage.</param>
+        public void Network_SetTargetStage(int targetStage)
+        {
+            foreach (SailMeshController smc in SailMeshControllers)
+            {
+                int delta = targetStage - smc.CurrentStage;
+                if (delta < 0)
+                {
+                    for (int i = 0; i < (int)Mathf.Abs(delta); i++)
+                    {
+                        smc.PreviousStage();
+                    }
+                }
+                else if (delta > 0)
+                {
+                    for (int i = 0; i < (int)Mathf.Abs(delta); i++)
+                    {
+                        smc.NextStage();
+                    }
+                }
+            }
+        }
+
         public int GetCurrentSailStage()
         {
             if (SailMeshControllers.Length > 0)

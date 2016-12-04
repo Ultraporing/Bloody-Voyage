@@ -12,10 +12,10 @@ namespace Controllers.Vehicles.Ship
         Sailing, Firing
     }
 
-    [RequireComponent(typeof (ShipController))]
+    [RequireComponent(typeof (LocalShipController))]
     public class ShipUserControl : MonoBehaviour
     {
-        private ShipController m_Car; // the car controller we want to use
+        private LocalShipController m_Car; // the car controller we want to use
         public SailController[] SailControllers;
         public CannonBankControllers[] CannonBankControllers;
         public GameObject shipCamera = null;
@@ -30,12 +30,7 @@ namespace Controllers.Vehicles.Ship
         private void Awake()
         {
             // get the car controller
-            m_Car = GetComponent<ShipController>();
-            foreach (SailController sc in SailControllers)
-            {
-                sc.LowerSails();
-                sc.LowerSails();
-            }
+            m_Car = GetComponent<LocalShipController>();
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
