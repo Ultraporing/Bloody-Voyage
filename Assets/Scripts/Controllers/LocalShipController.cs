@@ -59,12 +59,19 @@ namespace Controllers.Vehicles.Ship
         public float AccelInput { get; private set; }
 
         public NetworkManager NetworkMgr = null;
-        public Vector3 lastWorldPos, lastRotEuler, lastLocalScale;
+        public ShipUserControl ShipUserControl = null;
+        public Vector3 lastWorldPos;
+        public Vector3 velocity;
+        public float mag;
+
+        public float del = 0;
+
 
         // Use this for initialization
         private void Start()
         {
             NetworkMgr = GameObject.Find("_NetworkMgr").GetComponent<NetworkManager>();
+            ShipUserControl = GetComponent<ShipUserControl>();
 
             m_WheelMeshLocalRotations = new Quaternion[4];
             for (int i = 0; i < 4; i++)
@@ -186,10 +193,27 @@ namespace Controllers.Vehicles.Ship
             transform.rotation = m_Rigidbody.transform.rotation;
             m_Rigidbody.transform.localPosition = Vector3.zero;
             m_Rigidbody.transform.localRotation = Quaternion.identity;
+            velocity = m_Rigidbody.velocity;
+            mag = m_Rigidbody.velocity.magnitude;
 
+            if (m_Rigidbody.velocity.magnitude < 0.01f)
+            {
+                m_Rigidbody.velocity = Vector3.zero;
+            }
+
+            del += Time.deltaTime;
+            if (del >= 0.3f)
+            {
+                SendPos();
+                del = 0;
+            }
+        }
+
+        private void SendPos()
+        {
             if (NetworkMgr.RemotePlayers.Count > 0)
             {
-                if ((transform.position - lastWorldPos).magnitude > 0.1f)
+                if (transform.position != lastWorldPos)
                 {
                     PacketDesc_GameSyncTransform pkt = new PacketDesc_GameSyncTransform();
                     pkt.PacketTarget = FastSockets.Networking.EConnectionType.SECTOR_SERVER;
@@ -201,7 +225,6 @@ namespace Controllers.Vehicles.Ship
 
                     lastWorldPos = transform.position;
                 }
-               
             }
         }
 

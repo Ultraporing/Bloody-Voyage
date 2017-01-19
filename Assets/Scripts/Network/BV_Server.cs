@@ -48,8 +48,28 @@ namespace Network
         protected bool ReceivedPacket_GameSyncTransform(KeyValuePair<ClientConnection, object> pkt)
         {
             //Debug.Log("Server has received the SendClientList Packet. Sender: " + pkt.Key.ThisID);
+            
+            foreach (KeyValuePair<int, ClientConnection> cc in Clients)
+            {
+                if (cc.Key != pkt.Key.ThisID)
+                {
+                    PacketDesc_GameSyncTransform p = (PacketDesc_GameSyncTransform)pkt.Value;
+                    p.PacketTarget = EConnectionType.CLIENT;
+                    p.OtherPing = Clients[pkt.Key.ThisID].Ping + Clients[cc.Key].Ping;
+                    SendPacketToClient(p, cc.Key);
+                }
+            }
+            
+            //SendPacketToAllClients(p, p.OtherID);
 
-            PacketDesc_GameSyncTransform p = (PacketDesc_GameSyncTransform)pkt.Value;
+            return true;
+        }
+
+        protected bool ReceivedPacket_GameSetSailingStage(KeyValuePair<ClientConnection, object> pkt)
+        {
+            //Debug.Log("Server has received the SendClientList Packet. Sender: " + pkt.Key.ThisID);
+
+            PacketDesc_GameSetSailingStage p = (PacketDesc_GameSetSailingStage)pkt.Value;
             p.PacketTarget = EConnectionType.CLIENT;
 
             SendPacketToAllClients(p, p.OtherID);

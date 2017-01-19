@@ -4,6 +4,7 @@ using Controllers.Cannons;
 using UnityStandardAssets.Vehicles.Car;
 using Controllers.Vehicles.Ship;
 using UnityEngine.UI;
+using Network;
 
 namespace UI
 {
@@ -16,10 +17,12 @@ namespace UI
         float lastSpeed = 0;
 
         private GameObject ImageSpeed, ImageReload, CannonUI, UICompass;
-        private Text TextSpeed, ReloadText;
+        private Text TextSpeed, ReloadText, FPSText;
         private SwitchCannonImage[] SwitchCannonImages;
         private Image ImageReloadGreen;
+        float deltaTime = 0.0f;
 
+        public bool isSetup = false;
 
         void Start()
         {
@@ -31,11 +34,19 @@ namespace UI
             CannonUI = transform.Find("CannonUI").gameObject;
             SwitchCannonImages = CannonUI.GetComponentsInChildren<SwitchCannonImage>();
             UICompass = transform.Find("UICompass").gameObject;
+            FPSText = transform.Find("ImageFPS").Find("TextFPS").GetComponent<Text>();
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (!isSetup)
+            {
+                return;
+            }
+
+            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+            FPSText.text = "FPS: " + (int)(1.0f / deltaTime);
             UICompass.transform.localRotation = CreateCompassRotation();
 
             if (shipUserContr.currentShipMode == ShipMode.Sailing)
@@ -89,6 +100,15 @@ namespace UI
                 }
 
             }
+        }
+
+        public void Setup()
+        {
+            NetworkManager nw = GameObject.Find("_NetworkMgr").GetComponent<NetworkManager>();
+            poff = nw.LocalPlayer.LocalShipController.gameObject.transform.FindChild("PlayerShipModel").GetComponent<ParticleOnOff>();
+            shipUserContr = nw.LocalPlayer.LocalShipController.gameObject.GetComponent<ShipUserControl>();
+
+            isSetup = true;
         }
 
         Quaternion CreateCompassRotation()

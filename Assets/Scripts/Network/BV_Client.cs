@@ -10,12 +10,13 @@ namespace Network
     [Serializable]
     public class BV_Client : BaseClient<BV_Packets, BV_Client>
     {
-        protected OnPacketReceivedCallback OnPktReceivedSendClientList, OnPktReceivedGameSyncTransform;
+        protected OnPacketReceivedCallback OnPktReceivedSendClientList, OnPktReceivedGameSyncTransform, OnPktReceivedGameSetSailingStage;
 
         public BV_Client() : base("", 5000)
         {
+            
         }
-                
+
         public override void Shutdown()
         {
             base.Shutdown();
@@ -27,7 +28,8 @@ namespace Network
 
             base.Update();
         }
-        
+
+
         protected bool ReceivedPacket_SendClientList(KeyValuePair<ClientConnection, object> pkt)
         {
             if (OnPktReceivedSendClientList != null)
@@ -43,6 +45,16 @@ namespace Network
             if (OnPktReceivedGameSyncTransform != null)
             {
                 OnPktReceivedGameSyncTransform(pkt);
+            }
+
+            return true;
+        }
+
+        protected bool ReceivedPacket_GameSetSailingStage(KeyValuePair<ClientConnection, object> pkt)
+        {
+            if (OnPktReceivedGameSetSailingStage != null)
+            {
+                OnPktReceivedGameSetSailingStage(pkt);
             }
 
             return true;

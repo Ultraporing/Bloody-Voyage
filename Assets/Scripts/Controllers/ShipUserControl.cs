@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Linq;
+using Network;
 
 namespace Controllers.Vehicles.Ship
 {
@@ -22,7 +23,7 @@ namespace Controllers.Vehicles.Ship
         public float rotSpeed = 2;
 
         private int CurrentSailStage = 0;
-        private float LastV = 0;
+        public float LastV = 0;
         private CannonBankControllers CurrentActiveCannonBank = null;
         private int ActiveCannonbankHash = 0;
         public ShipMode currentShipMode = ShipMode.Sailing;
@@ -31,6 +32,7 @@ namespace Controllers.Vehicles.Ship
         {
             // get the car controller
             m_Car = GetComponent<LocalShipController>();
+            shipCamera = GameObject.Find("FreeLookCameraRig").GetComponentInChildren<Camera>().gameObject;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -43,6 +45,8 @@ namespace Controllers.Vehicles.Ship
             if (currentShipMode == ShipMode.Sailing)
             {
                 HandleSailingInput();
+
+                SendSailingStage();
 
                 if (CrossPlatformInputManager.GetButtonUp("FireLeftCannonbanks"))
                 {
@@ -90,9 +94,18 @@ namespace Controllers.Vehicles.Ship
                 HandleCannonRotation();
             }
             
-            m_Car.Move(h, LastV, LastV, 0f);
-           // Debug.Log("h: " + h + ", v: " + v);
+            m_Car.Move(h, LastV, LastV == 0 ? 0.25f : 0, 0f);
+           //Debug.Log("h: " + h + ", v: " + v);
 
+        }
+
+        private void SendSailingStage()
+        {
+            PacketDesc_GameSetSailingStage pkt = new PacketDesc_GameSetSailingStage();
+            pkt.PacketTarget = FastSockets.Networking.EConnectionType.SECTOR_SERVER;
+            pkt.OtherID = m_Car.NetworkMgr.LocalPlayer.UniqueID;
+            pkt.SailingStage = SailControllers[0].GetCurrentSailStage();
+            m_Car.NetworkMgr.LocalPlayer.SendPacketToParent(pkt);
         }
 
         private void HandleSailingInput()
@@ -112,7 +125,7 @@ namespace Controllers.Vehicles.Ship
                     {
                         sc.LowerSails();
                     }
-                    v = 0.5f;
+                    v = 0.3f;
                     LastV = v;
                 }
                 else if (CurrentSailStage == 1)
@@ -133,7 +146,7 @@ namespace Controllers.Vehicles.Ship
                     {
                         sc.HoistSails();
                     }
-                    v = 0.5f;
+                    v = 0.3f;
                     LastV = v;
                 }
                 else if (CurrentSailStage == 1)
@@ -142,7 +155,7 @@ namespace Controllers.Vehicles.Ship
                     {
                         sc.HoistSails();
                     }
-                    v = 1.0f;
+                    v = 0.6f;
                     LastV = v;
                 }
             }

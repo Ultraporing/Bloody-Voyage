@@ -25,6 +25,7 @@ namespace Network
         public NetworkManager NetworkMgr = null;
         public LocalShipController LocalShipController = null;
         public Queue<PacketQueueContainer> NetworkCommandQueue = new Queue<PacketQueueContainer>();
+        public int ServerPingMS = 0;
 
         public LocalPlayer(NetworkManager networkMgr)
         {
@@ -39,6 +40,7 @@ namespace Network
 
             OnPktReceivedSendClientList += Client_OnPktReceivedSendClientList;
             OnPktReceivedGameSyncTransform += Client_OnPktReceivedGameSyncTransform;
+            OnPktReceivedGameSetSailingStage += Client_OnPktReceivedGameSetSailingStage;
         }
 
         #region API_Events
@@ -92,16 +94,17 @@ namespace Network
 
             //NetworkMgr.GotList = true;
         }
-
+        
         private void Client_OnPktReceivedGameSyncTransform(KeyValuePair<ClientConnection, object> pkt)
         {
-            PacketDesc_GameSyncTransform packet = ((PacketDesc_GameSyncTransform)pkt.Value);
+            PacketDesc_GameSyncTransform p = ((PacketDesc_GameSyncTransform)pkt.Value);
 
-            //Debug.Log("Client has received the GameSyncTransform Packet.");
+            NetworkCommandQueue.Enqueue(new PacketQueueContainer((int)BV_Packets.GameSyncTransform, p));
+        }
 
-            NetworkCommandQueue.Enqueue(new PacketQueueContainer((int)BV_Packets.GameSyncTransform, pkt.Value));
-
-            //NetworkMgr.GotList = true;
+        private void Client_OnPktReceivedGameSetSailingStage(KeyValuePair<ClientConnection, object> pkt)
+        {
+            NetworkCommandQueue.Enqueue(new PacketQueueContainer((int)BV_Packets.GameSetSailingStage, pkt.Value));
         }
         #endregion
     }

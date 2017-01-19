@@ -6,6 +6,8 @@ using System;
 using Controllers.Vehicles.Ship;
 using Network.Controllers.Vehicles.Ship;
 using FastSockets.Networking;
+using UI;
+using FastSockets;
 
 namespace Network
 {
@@ -25,7 +27,7 @@ namespace Network
     [Serializable]
     public class NetworkManager : MonoBehaviour
     {
-        const bool IsServer = false;
+        bool IsServer = true;
 
         public List<RemotePlayers> RemotePlayers = new List<RemotePlayers>();
         public BV_Server Server = null;
@@ -36,9 +38,30 @@ namespace Network
 
         public GameObject LocalPlayerPrefab, RemotePlayerPrefab;
         //public bool GotList = false, Spawned = false;
+        public int PacketListSize = 0;
+
+        string ConnectIP = "86.49.25.193";
 
         void Start()
         {
+            Application.targetFrameRate = 200;
+            IsServer = false;//Application.isEditor;
+
+            if (!IsServer)
+            {
+                string[] cmd = Environment.GetCommandLineArgs();
+
+                foreach (string s in cmd)
+                {
+                    Debug.Log(s);
+                    if (s.Contains("IP="))
+                    {
+                        string[] sp = s.Split('=');
+                        ConnectIP = sp[1];
+                    }
+                }
+            }
+
             Server = new BV_Server();
             LocalPlayer = new LocalPlayer(this);
 
@@ -53,6 +76,9 @@ namespace Network
 
         private void Update()
         {
+            if (PacketListSize != LocalPlayer.NetworkCommandQueue.Count)
+                PacketListSize = LocalPlayer.NetworkCommandQueue.Count;
+
             while (LocalPlayer.NetworkCommandQueue.Count > 0)
             {
                 HandleQueuePacket(LocalPlayer.NetworkCommandQueue.Dequeue());
@@ -77,6 +103,8 @@ namespace Network
                 case (int)BV_Packets.SendClientList:
 
                     SpawnPlayer(LocalPlayer.UniqueID, 0);
+                    LocalPlayer.LocalShipController.OwnerClientID = LocalPlayer.UniqueID;
+                    GameObject.Find("Canvas").GetComponent<UIManager>().Setup();
 
                     foreach (int i in ((PacketDesc_SendClientList)pqc.Packet).ClientIDs)
                     {
@@ -96,19 +124,28 @@ namespace Network
                 case (int)BV_Packets.GameFinishedLoading:
                     break;
                 case (int)BV_Packets.GameSyncTransform:
-                    PacketDesc_GameSyncTransform pkt = (PacketDesc_GameSyncTransform)pqc.Packet;
-                    RemotePlayers rm = FindRemotePlayerWithID(pkt.OtherID);
-                    if (rm != null)
                     {
-                        rm.RemotePlayer.RemoteShipController.transform.position = pkt.WorldPosition;
-                        rm.RemotePlayer.RemoteShipController.transform.rotation = Quaternion.Euler(pkt.RotationEuler);
-                        rm.RemotePlayer.RemoteShipController.transform.localScale = pkt.LocalScale;
+                        PacketDesc_GameSyncTransform pkt = (PacketDesc_GameSyncTransform)pqc.Packet;
+                        RemotePlayers rm = FindRemotePlayerWithID(pkt.OtherID);
+                        if (rm != null)
+                        {
+                            rm.RemotePlayer.RemoteShipController.Network_SetTransform(pkt.WorldPosition, pkt.RotationEuler, pkt.LocalScale, pkt.OtherPing);
+                        }
                     }
-                    
                     break;
                 case (int)BV_Packets.GameFireOneOnSide:
                     break;
                 case (int)BV_Packets.GameFireAllOnSide:
+                    break;
+                case (int)BV_Packets.GameSetSailingStage:
+                    {
+                        PacketDesc_GameSetSailingStage pkt = (PacketDesc_GameSetSailingStage)pqc.Packet;
+                        RemotePlayers rm = FindRemotePlayerWithID(pkt.OtherID);
+                        if (rm != null)
+                        {
+                            rm.RemotePlayer.RemoteShipController.Network_SetTargetStage(pkt.SailingStage);
+                        }
+                    }
                     break;
             }
         }
@@ -157,7 +194,8 @@ namespace Network
             }
             else
             {
-                LocalPlayer.Connect(new IPEndPoint(IPAddress.Parse("86.49.25.193"), 1234), new IPEndPoint(IPAddress.Any, 12346));
+                //LocalPlayer.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1234), new IPEndPoint(IPAddress.Any, 12346));
+                LocalPlayer.Connect(new IPEndPoint(IPAddress.Parse(ConnectIP), 1234), new IPEndPoint(IPAddress.Any, 12346));
             }
         }
 

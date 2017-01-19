@@ -2,6 +2,7 @@ using Controllers.Cannons;
 using Controllers.Sails;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
 
 namespace Network.Controllers.Vehicles.Ship
@@ -16,11 +17,27 @@ namespace Network.Controllers.Vehicles.Ship
         private int CurrentSailStage = 0;
         public int CurrentSpeed = 0;
         public NetworkManager NetworkMgr = null;
+        public Rigidbody Rigidbody = null;
+
+        public Vector3 TargetPos, LastTargetPos;
+        public Quaternion TargetRot, LastTargetRot;
+        public int TotalPing = 0;
+        public float LerpElapsed = 0;
+        public bool QuickFinishLerp = false;
+        public bool LerpFinished = true;
+        public Text Ping;
+        
+
+        public CameraFacingBillboard cfb = null;
+        
 
         // Use this for initialization
         private void Start()
         {
+            cfb = transform.Find("Canvas").GetComponent<CameraFacingBillboard>();
+            cfb.m_Camera = Camera.main;
 
+            Ping = transform.Find("Canvas").Find("Panel").Find("Text").GetComponent<Text>();
         }
 
         private void Update()
@@ -31,6 +48,15 @@ namespace Network.Controllers.Vehicles.Ship
             {
                 Destroy(gameObject);
             }
+
+            if (LastTargetPos != TargetPos)
+            {
+                UpdatePlayerPosRot();
+            }
+
+            
+
+            Ping.text = TotalPing + "ms";
         }
 
         public void Network_Fire(CannonBankSide side, CannonBankPosition pos)
@@ -68,11 +94,48 @@ namespace Network.Controllers.Vehicles.Ship
             }
         }
 
-        public void Network_SetTransform(Vector3 worldPos, Vector3 rotEuler, Vector3 localScale)
+        public void Network_SetTransform(Vector3 worldPos, Vector3 rotEuler, Vector3 localScale, int ping)
         {
-            transform.position = worldPos;
-            transform.rotation = Quaternion.Euler(rotEuler);
+            if (!LerpFinished)
+            {
+                QuickFinishLerp = true;
+            }
+            
+            LastTargetPos = TargetPos;
+            LastTargetRot = TargetRot;
+
+            TargetPos = worldPos;
+            TargetRot = Quaternion.Euler(rotEuler);
             transform.localScale = localScale;
+            TotalPing = ping;
+
+            LerpFinished = false;
+        }
+
+        public void UpdatePlayerPosRot()
+        {          
+            if (QuickFinishLerp)
+            {
+                LerpElapsed = 0;
+                transform.position = Vector3.Slerp(transform.position, LastTargetPos, 1.0f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, LastTargetRot, 1.0f);
+
+                QuickFinishLerp = false;
+            }
+
+            if (!LerpFinished)
+            {
+                LerpElapsed += 1/TotalPing;
+
+                transform.position = Vector3.Slerp(transform.position, TargetPos, LerpElapsed);
+                transform.rotation = Quaternion.Slerp(transform.rotation, TargetRot, LerpElapsed);
+
+                if (LerpElapsed >= 1.0f)
+                {
+                    LerpElapsed = 0;
+                    LerpFinished = true;
+                }
+            }
         }
 
         public void Network_SetCurrentSpeed(int currentSpeed)

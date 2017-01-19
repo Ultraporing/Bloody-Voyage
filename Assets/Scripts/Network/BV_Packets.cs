@@ -14,6 +14,7 @@ namespace Network
         GameSyncTransform,
         GameFireOneOnSide,
         GameFireAllOnSide,
+        GameSetSailingStage,
         
         NUM_PACKETS
     }
@@ -22,6 +23,13 @@ namespace Network
     public class PacketDesc_SendClientList : BasePacket<BV_Packets>
     {
         public List<int> ClientIDs = new List<int>();
+    }
+
+    [Serializable]
+    public class PacketDesc_GameSetSailingStage : BasePacket<BV_Packets>
+    {
+        public int OtherID;
+        public int SailingStage;
     }
 
     [Serializable]
@@ -40,8 +48,8 @@ namespace Network
     public class PacketDesc_GameSyncTransform : BasePacket<BV_Packets>
     {
         public int OtherID;
+        public int OtherPing;
         public BV_Vector3 WorldPosition, RotationEuler, LocalScale;
-
     }
 
     [Serializable]
